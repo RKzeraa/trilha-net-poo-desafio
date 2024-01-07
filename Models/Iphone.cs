@@ -1,13 +1,10 @@
-using System;
-using System.Xml.Linq;
-using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 
 namespace DesafioPOO.Models
 {
     public class Iphone : Smartphone
     {
-        public readonly string logo = @"
+        public readonly string Logo = @"
             .:'
       __ :'__
    .'`__`-'__``.
@@ -27,7 +24,7 @@ namespace DesafioPOO.Models
 
         private static string ObterAplicativoAppleStore(string nomeApp)
         {
-            string url = $"https://itunes.apple.com/search?term={nomeApp}&entity=macSoftware";
+            string url = $"https://itunes.apple.com/search?term={nomeApp}&entity=software";
 
             using (HttpClient client = new HttpClient())
             {
@@ -35,28 +32,60 @@ namespace DesafioPOO.Models
                 JObject jsonObject = JObject.Parse(jsonResult);
 
                 var results = jsonObject["results"];
-                if (results.HasValues)
+                if (results != null && results.HasValues)
                 {
-                    var primeiroResultado = results[0];
+                    var resultFromResults =
+                        from result in results
+                        where result["trackName"].ToString()
+                            .Contains(nomeApp, StringComparison.InvariantCultureIgnoreCase)
+                        select result;
 
-                    string nomeCompleto = primeiroResultado["trackName"].ToString();
+                    var fromResults = resultFromResults.ToList();
+                    if (fromResults.Any())
+                    {
+                        Console.WriteLine("Resultados encontrados:");
 
-                    if (long.TryParse(primeiroResultado["fileSizeBytes"].ToString(), out long tamanhoEmBytes))
-                    {
-                        double tamanhoEmMegabytes = BytesParaMegabytes(tamanhoEmBytes);
-                        return $"Instalando aplicativo \"{nomeCompleto}\" - Tamanho: {tamanhoEmMegabytes.ToString("F2")} MB";
+                        int i = 1;
+                        foreach (var result in fromResults)
+                        {
+                            Console.WriteLine($"{i}. {result["trackName"]}");
+                            i++;
+                        }
+
+                        while (true)
+                        {
+                            Console.Write("Escolha o número de qual aplicativo deseja instalar (ou 0 para cancelar): ");
+
+                            if (int.TryParse(Console.ReadLine(), out int escolha) && escolha >= 0 && escolha < i)
+                            {
+                                if (escolha == 0)
+                                {
+                                    return $"Operação cancelada";
+                                }
+
+                                var resultadoEscolhido = fromResults.ElementAt(escolha - 1);
+
+                                string nomeCompleto = resultadoEscolhido["trackName"]?.ToString();
+
+                                if (long.TryParse(resultadoEscolhido["fileSizeBytes"]?.ToString(), out long tamanhoEmBytes))
+                                {
+                                    double tamanhoEmMegabytes = BytesParaMegabytes(tamanhoEmBytes);
+                                    return
+                                        $"Instalando aplicativo \"{nomeCompleto}\" - Tamanho: {tamanhoEmMegabytes.ToString("F2")} MB";
+                                }
+
+                                return $"Instalando aplicativo \"{nomeCompleto}\"";
+                            }
+
+                            Console.WriteLine("Escolha inválida. Tente novamente.");
+
+                        }
                     }
-                    else
-                    {
-                        return $"Instalando aplicativo \"{nomeCompleto}\"";
-                    }
-                    
-                }
-                else
-                {
+
                     return $"O \"{nomeApp}\" não foi encontrado na App Store";
                 }
             }
+            return $"O \"{nomeApp}\" não foi encontrado na App Store";
         }
 
         private static double BytesParaMegabytes(long bytes)
