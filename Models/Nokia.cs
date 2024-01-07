@@ -5,7 +5,7 @@ namespace DesafioPOO.Models
 {
     public class Nokia : Smartphone
     {
-        private readonly string _logo = @"
+        public readonly string logo = @"
     _   ______  __ __ _______ 
    / | / / __ \/ //_//  _/   |
   /  |/ / / / / ,<   / // /| |
@@ -13,10 +13,7 @@ namespace DesafioPOO.Models
 /_/ |_/\____/_/ |_/___/_/  |_|        
             ";
 
-        public Nokia(string numero, string modelo, string imei, int memoria) : base(numero, modelo, imei, memoria)
-        {
-            Console.WriteLine(_logo);
-        }
+        public Nokia(string numero, string modelo, string imei, int memoria) : base(numero, modelo, imei, memoria) { }
 
         public override void InstalarAplicativo(string nomeApp)
         {

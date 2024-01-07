@@ -17,14 +17,14 @@ namespace DesafioPOO.Models
             _memoria = memoria;
         }
 
-        public void Ligar()
+        public void Ligar(string numeroEscolhido)
         {
-            Console.WriteLine("Fazendo ligação para: ");
+            Console.WriteLine($"Fazendo ligação para: {numeroEscolhido}");
         }
 
-        public void ReceberLigacao()
+        public void ReceberLigacao(string numeroOrigem)
         {
-            Console.WriteLine("Recebendo ligação de: ");
+            Console.WriteLine($"Recebendo ligação de: {numeroOrigem}");
         }
 
         public abstract void InstalarAplicativo(string nomeApp);

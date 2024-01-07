@@ -7,7 +7,7 @@ namespace DesafioPOO.Models
 {
     public class Iphone : Smartphone
     {
-        private readonly string _logo = @"
+        public readonly string logo = @"
             .:'
       __ :'__
    .'`__`-'__``.
@@ -17,10 +17,7 @@ namespace DesafioPOO.Models
     `.__.-.__.'
         ";
 
-        public Iphone(string numero, string modelo, string imei, int memoria) : base(numero, modelo, imei, memoria)
-        {
-            Console.WriteLine(_logo);
-        }
+        public Iphone(string numero, string modelo, string imei, int memoria) : base(numero, modelo, imei, memoria) { }
 
         public override void InstalarAplicativo(string nomeApp)
         {
