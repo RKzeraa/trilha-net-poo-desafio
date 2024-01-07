@@ -5,7 +5,7 @@ namespace DesafioPOO.Models
 {
     public class Nokia : Smartphone
     {
-        string _logo = @"
+        private readonly string _logo = @"
     _   ______  __ __ _______ 
    / | / / __ \/ //_//  _/   |
   /  |/ / / / / ,<   / // /| |
