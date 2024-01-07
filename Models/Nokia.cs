@@ -1,6 +1,8 @@
+using System;
+using HtmlAgilityPack;
+
 namespace DesafioPOO.Models
 {
-    // TODO: Herdar da classe "Smartphone"
     public class Nokia : Smartphone
     {
         string _logo = @"
@@ -16,10 +18,45 @@ namespace DesafioPOO.Models
             Console.WriteLine(_logo);
         }
 
-        // TODO: Sobrescrever o método "InstalarAplicativo"
         public override void InstalarAplicativo(string nomeApp)
         {
-            Console.WriteLine($"Instalando aplicativo \"{nomeApp}\" no Nokia...");
+            string infoApp = ObterAplicativoGooglePlay(nomeApp);
+            Console.WriteLine($"{infoApp} no Nokia...");
+        }
+
+        private static string ObterAplicativoGooglePlay(string nomeApp)
+        {
+            string url = $"https://play.google.com/store/search?q={nomeApp}&c=apps";
+
+            HtmlWeb web = new HtmlWeb();
+            HtmlDocument doc = web.Load(url);
+
+            var linkApp = doc.DocumentNode.SelectSingleNode("//a[@href and contains(@class, 'Qfxief')]");
+
+            if (linkApp != null)
+            {
+                string hrefValue = linkApp.GetAttributeValue("href", "");
+
+                string appUrl = "https://play.google.com" + hrefValue;
+
+                HtmlDocument appDoc = web.Load(appUrl);
+
+                var h1Element = appDoc.DocumentNode.SelectSingleNode("//h1[@itemprop='name']");
+
+                if (h1Element != null)
+                {
+                    string nomeCompleto = h1Element.InnerText.Trim();
+                    return $"Instalando aplicativo \"{nomeCompleto}\"";
+                }
+                else
+                {
+                   return $"Houve um problema ao tentar instalar o \"{nomeApp}\" na Google Play Store";
+                }
+            }
+            else
+            {
+                return $"O \"{nomeApp}\" não foi encontrado na Google Play Store";
+            }
         }
     }
 }
