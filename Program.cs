@@ -1,29 +1,229 @@
 ﻿using DesafioPOO.Models;
+using System.Reflection;
+using System;
 
 //TODO: Aplicar cores diferentes no console em todos os textos
 
-//TODO: Criar menu de interação para preencher os dados
-Nokia nokia = new("123456789", modelo: "Modelo 1", imei: "1111111111", memoria: 64);
-Iphone iphone = new("987654321", modelo: "Modelo 2", imei: "2222222222", memoria: 128);
 
-//TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
-Console.WriteLine($"Smartphone Nokia: \n {nokia.Logo}");
-nokia.Ligar(iphone.Numero);
+string opcao;
+bool exibirMenu = true;
 
-//TODO: Solicitar ao usuario qual aplicativo deseja instalar
-nokia.InstalarAplicativo("WhatsApp");
-nokia.InstalarAplicativo("Telegram");
-nokia.InstalarAplicativo("asdqwe");
-nokia.InstalarAplicativo("Rede Brasil");
+// Realiza o loop do menu
+while (exibirMenu)
+{
+    //textCustom.ShowLogo();
+    Console.WriteLine("Digite a sua opção:");
+    Console.WriteLine("1 - Cadastrar Iphone");
+    Console.WriteLine("2 - Cadastrar Nokia");
+    Console.WriteLine("3 - Encerrar");
+    Console.Write("\r\nSelecione uma opção: ");
+    opcao = Console.ReadLine();
 
-Console.WriteLine("\n");
+    switch (opcao)
+    {
+        case "1":
+            ExecutarSmartphone(PreencherDados(opcao));
+            break;
 
-//TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
-Console.WriteLine($"Smartphone Iphone: \n{iphone.Logo}");
-iphone.ReceberLigacao(nokia.Numero);
+        case "2":
+            ExecutarSmartphone(PreencherDados(opcao));
+            break;
 
-//TODO: Solicitar ao usuario qual aplicativo deseja instalar
-iphone.InstalarAplicativo("Telegram");
-iphone.InstalarAplicativo("asdqwe");
-iphone.InstalarAplicativo("WhatsApp");
-iphone.InstalarAplicativo("Rede Brasil");
+        case "3":
+            exibirMenu = false;
+            break;
+
+        default:
+            Console.WriteLine("Opção Inválida!!!");
+            break;
+    }
+
+    Console.Clear();
+    Console.WriteLine("Pressione uma tecla para continuar");
+    Console.ReadKey();
+}
+
+#region Métodos
+static Smartphone PreencherDados(string op)
+{
+    string numero, modelo, imei;
+    int memoria;
+    if (op != "1")
+    {
+        Console.WriteLine("Digite o numero do Nokia: ");
+        numero = Console.ReadLine();
+
+        Console.WriteLine("Digite o modelo do Nokia: ");
+        modelo = Console.ReadLine();
+
+        Console.WriteLine($"Digite o IMEI do Nokia {modelo}: ");
+        imei = Console.ReadLine();
+
+        Console.WriteLine($"Digite o tamanho de armazenamento do Nokia {modelo}: ");
+        memoria = int.Parse(Console.ReadLine() ?? string.Empty);
+
+        return new Nokia(numero, modelo: modelo, imei: imei, memoria: memoria);
+    }
+
+    Console.WriteLine("Digite o numero do Iphone: ");
+    numero = Console.ReadLine();
+
+    Console.WriteLine("Digite o modelo do Iphone: ");
+    modelo = Console.ReadLine();
+
+    Console.WriteLine($"Digite o IMEI do Iphone {modelo}: ");
+    imei = Console.ReadLine();
+
+    Console.WriteLine($"Digite o tamanho de armazenamento do Iphone {modelo}: ");
+    memoria = int.Parse(Console.ReadLine() ?? string.Empty);
+
+    return new Iphone(numero, modelo: modelo, imei: imei, memoria: memoria);
+}
+
+static void ExecutarSmartphone(Smartphone smartphone)
+{
+    
+
+    if (smartphone is Iphone iphone)
+    {
+        MenuIphone(iphone);
+
+    }
+    else if (smartphone is Nokia nokia)
+    {
+        MenuNokia(nokia);
+    }
+
+    
+}
+
+static void MenuIphone(Iphone iphone)
+{
+    string opcao;
+    bool exibirMenu = true;
+
+    // Realiza o loop do menu
+    while (exibirMenu)
+    {
+
+        Console.Clear();
+        Console.WriteLine($"Smartphone {iphone.GetType()}: \n {iphone.Logo}");
+        Console.WriteLine("\nDigite a sua opção:");
+        Console.WriteLine("1 - Fazer Ligação");
+        Console.WriteLine("2 - Instalar Aplicativo");
+        Console.WriteLine("3 - Encerrar");
+        Console.Write("\r\nSelecione uma opção: ");
+        opcao = Console.ReadLine();
+
+        switch (opcao)
+        {
+            case "1":
+                Console.Clear();
+                Console.WriteLine(iphone.Logo);
+                Console.WriteLine("\nDigite para qual numero deseja ligar: ");
+                string numeroLigacao = Console.ReadLine();
+                iphone.Ligar(numeroLigacao);
+                //nokia.ReceberLigacao(iphone.Numero);
+                break;
+
+            case "2":
+                Console.Clear();
+                Console.WriteLine(iphone.Logo);
+                Console.WriteLine("\nDigite qual o nome do aplicativo que deseja instalar: ");
+                string nomeDoAplicativo = Console.ReadLine();
+                iphone.InstalarAplicativo(nomeDoAplicativo);
+                break;
+
+            case "3":
+                exibirMenu = false;
+                break;
+
+            default:
+                Console.Clear();
+                Console.WriteLine(iphone.Logo);
+                Console.WriteLine("\nOpção Inválida!!!");
+                break;
+        }
+
+        Console.WriteLine("Pressione uma tecla para continuar");
+        Console.ReadKey();
+    }
+}
+
+static void MenuNokia(Nokia nokia)
+{
+    string opcao;
+    bool exibirMenu = true;
+
+    // Realiza o loop do menu
+    while (exibirMenu)
+    {
+
+        Console.Clear();
+        Console.WriteLine($"Smartphone {nokia.GetType()}: \n {nokia.Logo}");
+        Console.WriteLine("\nDigite a sua opção:");
+        Console.WriteLine("1 - Fazer Ligação");
+        Console.WriteLine("2 - Instalar Aplicativo");
+        Console.WriteLine("3 - Encerrar");
+        Console.Write("\r\nSelecione uma opção: ");
+        opcao = Console.ReadLine();
+
+        switch (opcao)
+        {
+            case "1":
+                Console.Clear();
+                Console.WriteLine(nokia.Logo);
+                Console.WriteLine("\nDigite para qual numero deseja ligar: ");
+                string numeroLigacao = Console.ReadLine();
+                nokia.Ligar(numeroLigacao);
+                //iphone.ReceberLigacao(nokia.Numero);
+                break;
+
+            case "2":
+                Console.Clear();
+                Console.WriteLine(nokia.Logo);
+                Console.WriteLine("\nDigite qual o nome do aplicativo que deseja instalar: ");
+                string nomeDoAplicativo = Console.ReadLine();
+                nokia.InstalarAplicativo(nomeDoAplicativo);
+                break;
+
+            case "3":
+                exibirMenu = false;
+                break;
+
+            default:
+                Console.Clear();
+                Console.WriteLine(nokia.Logo);
+                Console.WriteLine("\nOpção Inválida!!!");
+                break;
+        }
+
+        Console.WriteLine("Pressione uma tecla para continuar");
+        Console.ReadKey();
+    }
+}
+
+#endregion
+
+
+////TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
+//Console.WriteLine($"Smartphone Nokia: \n {nokia.Logo}");
+//nokia.Ligar(iphone.Numero);
+
+////TODO: Solicitar ao usuario qual aplicativo deseja instalar
+//nokia.InstalarAplicativo("WhatsApp");
+//nokia.InstalarAplicativo("Telegram");
+//nokia.InstalarAplicativo("asdqwe");
+//nokia.InstalarAplicativo("Rede Brasil");
+
+//Console.WriteLine("\n");
+
+////TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
+//Console.WriteLine($"Smartphone Iphone: \n{iphone.Logo}");
+//iphone.ReceberLigacao(nokia.Numero);
+
+////TODO: Solicitar ao usuario qual aplicativo deseja instalar
+//iphone.InstalarAplicativo("Telegram");
+//iphone.InstalarAplicativo("asdqwe");
+//iphone.InstalarAplicativo("WhatsApp");
+//iphone.InstalarAplicativo("Rede Brasil");
