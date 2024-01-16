@@ -8,7 +8,6 @@ using System;
 string opcao;
 bool exibirMenu = true;
 
-// Realiza o loop do menu
 while (exibirMenu)
 {
     //textCustom.ShowLogo();
@@ -93,8 +92,6 @@ static void ExecutarSmartphone(Smartphone smartphone)
     {
         MenuNokia(nokia);
     }
-
-    
 }
 
 static void MenuIphone(Iphone iphone)
@@ -102,7 +99,6 @@ static void MenuIphone(Iphone iphone)
     string opcao;
     bool exibirMenu = true;
 
-    // Realiza o loop do menu
     while (exibirMenu)
     {
 
@@ -155,7 +151,6 @@ static void MenuNokia(Nokia nokia)
     string opcao;
     bool exibirMenu = true;
 
-    // Realiza o loop do menu
     while (exibirMenu)
     {
 
@@ -204,26 +199,3 @@ static void MenuNokia(Nokia nokia)
 }
 
 #endregion
-
-
-////TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
-//Console.WriteLine($"Smartphone Nokia: \n {nokia.Logo}");
-//nokia.Ligar(iphone.Numero);
-
-////TODO: Solicitar ao usuario qual aplicativo deseja instalar
-//nokia.InstalarAplicativo("WhatsApp");
-//nokia.InstalarAplicativo("Telegram");
-//nokia.InstalarAplicativo("asdqwe");
-//nokia.InstalarAplicativo("Rede Brasil");
-
-//Console.WriteLine("\n");
-
-////TODO: Exibir a logo sempre chamar um metodo novo após o Console.Clear()
-//Console.WriteLine($"Smartphone Iphone: \n{iphone.Logo}");
-//iphone.ReceberLigacao(nokia.Numero);
-
-////TODO: Solicitar ao usuario qual aplicativo deseja instalar
-//iphone.InstalarAplicativo("Telegram");
-//iphone.InstalarAplicativo("asdqwe");
-//iphone.InstalarAplicativo("WhatsApp");
-//iphone.InstalarAplicativo("Rede Brasil");
